@@ -314,76 +314,76 @@ void searchMultiWord(
 // MAIN (CLEANED and UPDATED for Semantic Search)
 // ----------------------------------------------------
 
-int main(int argc, char* argv[]) {
-    // NEW: Expect 7 arguments now (query, lexicon, map, df, barrels, embeddings, doc_vectors)
-    if (argc < 8) { 
-        std::cout << "Usage: search <query> <lexicon.json> <barrel_mapping.json> <df_map.json> <barrels_dir> <embeddings.vec> <doc_vectors.json>\n";
-        std::cout << "Example: ./search_engine \"data structures\" ./lexicon.json ./map.json ../df.json ../barrels ../embeddings.vec ../doc_vectors.json\n";
-        return 1;
-    }
+// int main(int argc, char* argv[]) {
+//     // NEW: Expect 7 arguments now (query, lexicon, map, df, barrels, embeddings, doc_vectors)
+//     if (argc < 8) { 
+//         std::cout << "Usage: search <query> <lexicon.json> <barrel_mapping.json> <df_map.json> <barrels_dir> <embeddings.vec> <doc_vectors.json>\n";
+//         std::cout << "Example: ./search_engine \"data structures\" ./lexicon.json ./map.json ../df.json ../barrels ../embeddings.vec ../doc_vectors.json\n";
+//         return 1;
+//     }
 
-    // --- Cleaned Argument Extraction ---
-    std::string query           = argv[1]; 
-    std::string lexFile         = argv[2];
-    std::string mapFile         = argv[3];
-    std::string dfFile          = argv[4];
-    std::string barrelsDir      = argv[5];
-    std::string embeddingsFile  = argv[6]; // Word Embeddings File
-    std::string docVecFile      = argv[7]; // Document Vectors File
-    // --- End of Argument Extraction ---
+//     // --- Cleaned Argument Extraction ---
+//     std::string query           = argv[1]; 
+//     std::string lexFile         = argv[2];
+//     std::string mapFile         = argv[3];
+//     std::string dfFile          = argv[4];
+//     std::string barrelsDir      = argv[5];
+//     std::string embeddingsFile  = argv[6]; // Word Embeddings File
+//     std::string docVecFile      = argv[7]; // Document Vectors File
+//     // --- End of Argument Extraction ---
 
-    // Load static data
-    std::cout << "Loading lexicon...\n";
-    auto lexMap         = loadLexicon(lexFile);
-    std::cout << "Loading barrel mapping...\n";
-    auto barrelMap      = loadBarrelMapping(mapFile);
-    std::cout << "Loading Document Frequency map...\n";
-    auto dfMap          = loadDFMap(dfFile);
+//     // Load static data
+//     std::cout << "Loading lexicon...\n";
+//     auto lexMap         = loadLexicon(lexFile);
+//     std::cout << "Loading barrel mapping...\n";
+//     auto barrelMap      = loadBarrelMapping(mapFile);
+//     std::cout << "Loading Document Frequency map...\n";
+//     auto dfMap          = loadDFMap(dfFile);
     
-    // --- Semantic Search Loading ---
-    WordEmbeddingsMap embeddings = loadWordEmbeddings(embeddingsFile);
-    DocumentVectorsMap docVectors = loadDocumentVectors(docVecFile);
-    // -------------------------------
+//     // --- Semantic Search Loading ---
+//     WordEmbeddingsMap embeddings = loadWordEmbeddings(embeddingsFile);
+//     DocumentVectorsMap docVectors = loadDocumentVectors(docVecFile);
+//     // -------------------------------
     
-    std::cout << "Data loaded (" << lexMap.size() << " terms, " << dfMap.size() << " DF entries, " << embeddings.size() << " embeddings).\n";
+//     std::cout << "Data loaded (" << lexMap.size() << " terms, " << dfMap.size() << " DF entries, " << embeddings.size() << " embeddings).\n";
     
-    // 1. Calculate Query Vector
-    EmbeddingVector queryVector;
-    if (!embeddings.empty()) {
-        queryVector = getQueryVector(query, embeddings);
-        if (queryVector.empty()) {
-            std::cout << "[INFO] Query vector is empty. Semantic score will be zero.\n";
-        }
-    }
+//     // 1. Calculate Query Vector
+//     EmbeddingVector queryVector;
+//     if (!embeddings.empty()) {
+//         queryVector = getQueryVector(query, embeddings);
+//         if (queryVector.empty()) {
+//             std::cout << "[INFO] Query vector is empty. Semantic score will be zero.\n";
+//         }
+//     }
     
-    std::vector<std::string> queryWords = tokenize(query); 
-    size_t numWords = queryWords.size();
+//     std::vector<std::string> queryWords = tokenize(query); 
+//     size_t numWords = queryWords.size();
     
-    // --- Timing the search function ---
-    using std::chrono::high_resolution_clock;
-    using std::chrono::duration_cast;
-    using std::chrono::microseconds;
+//     // --- Timing the search function ---
+//     using std::chrono::high_resolution_clock;
+//     using std::chrono::duration_cast;
+//     using std::chrono::microseconds;
     
-    auto t1 = high_resolution_clock::now();
+//     auto t1 = high_resolution_clock::now();
     
-    // Perform the multi-word search
-    searchMultiWord(query, lexMap, barrelMap, dfMap, barrelsDir, embeddings, docVectors, queryVector); 
+//     // Perform the multi-word search
+//     searchMultiWord(query, lexMap, barrelMap, dfMap, barrelsDir, embeddings, docVectors, queryVector); 
     
-    auto t2 = high_resolution_clock::now();
+//     auto t2 = high_resolution_clock::now();
     
-    auto ms_int = duration_cast<microseconds>(t2 - t1);
-    double time_ms = ms_int.count() / 1000.0;
-    std::cout << "\nTime taken for search: " 
-              << time_ms
-              << " milliseconds\n";
+//     auto ms_int = duration_cast<microseconds>(t2 - t1);
+//     double time_ms = ms_int.count() / 1000.0;
+//     std::cout << "\nTime taken for search: " 
+//               << time_ms
+//               << " milliseconds\n";
     
-    if (numWords == 1 && time_ms < 500.0) {
-        std::cout << "QUERY PERFORMANCE: Single word query target met (Target: < 500ms).\n";
-    } else if (numWords > 1 && numWords <= 5 && time_ms < 1500.0) {
-        std::cout << "QUERY PERFORMANCE: Multi-word query target met (Target: < 1.5 seconds).\n";
-    } else if (numWords > 5) {
-        std::cout << "QUERY PERFORMANCE: Query is > 5 words. Performance should remain stable.\n";
-    }
+//     if (numWords == 1 && time_ms < 500.0) {
+//         std::cout << "QUERY PERFORMANCE: Single word query target met (Target: < 500ms).\n";
+//     } else if (numWords > 1 && numWords <= 5 && time_ms < 1500.0) {
+//         std::cout << "QUERY PERFORMANCE: Multi-word query target met (Target: < 1.5 seconds).\n";
+//     } else if (numWords > 5) {
+//         std::cout << "QUERY PERFORMANCE: Query is > 5 words. Performance should remain stable.\n";
+//     }
 
-    return 0;
-}
+//     return 0;
+// }

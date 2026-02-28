@@ -300,37 +300,83 @@ void addDocument(int docID,
     std::cout << "Document " << docID << " added successfully!\n";
 }
 
-// -------------------- MAIN --------------------
-int main(int argc, char* argv[]) {
-    if (argc < 5) {
-        std::cout << "Usage:\nSearchEngine lexicon.json barrel_map.json df_map.json barrels_dir\n";
-        return 1;
+std::vector<SearchResult> run_search(
+    const std::string& query,
+    const std::unordered_map<std::string,int>& lex,
+    const std::unordered_map<int,int>& barrelMap,
+    const DFMap& df,
+    const std::string& barrelDir)
+{
+    auto words = tokenize(query);
+
+    PostingList result = getPostings(words[0], lex, barrelMap, barrelDir);
+    if (result.empty()) return {};
+
+    for (size_t i=1;i<words.size();++i) {
+        result = intersect(result, getPostings(words[i], lex, barrelMap, barrelDir));
+        if (result.empty()) return {};
     }
 
-    auto lex  = loadLexicon(argv[1]);
-    auto map  = loadBarrelMap(argv[2]);
-    auto df   = loadDFMap(argv[3]);
-    std::string barrels_dir = argv[4];
+    std::vector<SearchResult> ranked;
+    const float SEMANTIC_WEIGHT = 0.35f;
 
-    int lastDocID = TOTAL_DOCUMENTS;
+    for (auto& [doc, ttf] : result) {
+        float baseScore = tfidfScore(ttf, words, lex, df);
 
-    while (true) {
-        std::cout << "\nEnter command (add \"document\" / search \"query\" / exit): ";
-        std::string line;
-        std::getline(std::cin, line);
+        PostingList docTerms;
+        for (auto& w : words) {
+            if (lex.count(w)) {
+                int lexID = lex.at(w);
+                docTerms[lexID] = getPostings(w, lex, barrelMap, barrelDir)[doc];
+            }
+        }
 
-        if (line.substr(0,4) == "add ") {
-            std::string content = line.substr(4);
-            addDocument(++lastDocID, content, lex, df, map, barrels_dir);
-        } else if (line.substr(0,7) == "search ") {
-            std::string query = line.substr(7);
-            auto t1 = std::chrono::high_resolution_clock::now();
-            search(query, lex, map, df, barrels_dir);
-            auto t2 = std::chrono::high_resolution_clock::now();
-            std::cout << "\nTime: "
-                      << std::chrono::duration_cast<std::chrono::milliseconds>(t2-t1).count()
-                      << " ms\n";
-        } else if (line == "exit") break;
-        else std::cout << "Unknown command.\n";
+        float semantic = semanticBoost(docTerms, words, lex);
+        float finalScore = baseScore + SEMANTIC_WEIGHT * semantic;
+
+        ranked.push_back({doc, finalScore});
     }
+
+    std::sort(ranked.begin(), ranked.end(),
+              [](auto&a, auto&b){ return a.score > b.score; });
+
+    if (ranked.size() > 10)
+        ranked.resize(10);
+
+    return ranked;
 }
+
+// // -------------------- MAIN --------------------
+// int main(int argc, char* argv[]) {
+//     if (argc < 5) {
+//         std::cout << "Usage:\nSearchEngine lexicon.json barrel_map.json df_map.json barrels_dir\n";
+//         return 1;
+//     }
+
+//     auto lex  = loadLexicon(argv[1]);
+//     auto map  = loadBarrelMap(argv[2]);
+//     auto df   = loadDFMap(argv[3]);
+//     std::string barrels_dir = argv[4];
+
+//     int lastDocID = TOTAL_DOCUMENTS;
+
+//     while (true) {
+//         std::cout << "\nEnter command (add \"document\" / search \"query\" / exit): ";
+//         std::string line;
+//         std::getline(std::cin, line);
+
+//         if (line.substr(0,4) == "add ") {
+//             std::string content = line.substr(4);
+//             addDocument(++lastDocID, content, lex, df, map, barrels_dir);
+//         } else if (line.substr(0,7) == "search ") {
+//             std::string query = line.substr(7);
+//             auto t1 = std::chrono::high_resolution_clock::now();
+//             search(query, lex, map, df, barrels_dir);
+//             auto t2 = std::chrono::high_resolution_clock::now();
+//             std::cout << "\nTime: "
+//                       << std::chrono::duration_cast<std::chrono::milliseconds>(t2-t1).count()
+//                       << " ms\n";
+//         } else if (line == "exit") break;
+//         else std::cout << "Unknown command.\n";
+//     }
+// }

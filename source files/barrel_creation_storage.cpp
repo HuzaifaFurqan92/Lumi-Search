@@ -99,36 +99,36 @@ void buildBarrels(
 
 
 // -------------------- Main --------------------
-int main(int argc, char* argv[])
-{
-    if(argc < 4){
-        std::cout << "Usage: member2_barrel_builder "
-                  << "<inverted_index.json> "
-                  << "<barrel_mapping.json> "
-                  << "<output_dir>\n";
-        return 1;
-    }
+// int main(int argc, char* argv[])
+// {
+//     if(argc < 4){
+//         std::cout << "Usage: member2_barrel_builder "
+//                   << "<inverted_index.json> "
+//                   << "<barrel_mapping.json> "
+//                   << "<output_dir>\n";
+//         return 1;
+//     }
 
-    std::string invertedFile = argv[1];
-    std::string mapFile      = argv[2];
-    std::string outputDir   = argv[3];
+//     std::string invertedFile = argv[1];
+//     std::string mapFile      = argv[2];
+//     std::string outputDir   = argv[3];
 
-    // Load data
-    json invertedIndex = loadInvertedIndex(invertedFile);
-    auto barrelMap     = loadBarrelMapping(mapFile);
+//     // Load data
+//     json invertedIndex = loadInvertedIndex(invertedFile);
+//     auto barrelMap     = loadBarrelMapping(mapFile);
 
-    std::cout << "Loaded inverted index: "
-              << invertedIndex.size()
-              << " terms\n";
+//     std::cout << "Loaded inverted index: "
+//               << invertedIndex.size()
+//               << " terms\n";
 
-    std::cout << "Loaded barrel mapping: "
-              << barrelMap.size()
-              << " terms\n";
+//     std::cout << "Loaded barrel mapping: "
+//               << barrelMap.size()
+//               << " terms\n";
 
-    // Build barrels
-    buildBarrels(invertedIndex, barrelMap, outputDir);
+//     // Build barrels
+//     buildBarrels(invertedIndex, barrelMap, outputDir);
 
-    std::cout << "✅ Barrel generation complete.\n";
+//     std::cout << "✅ Barrel generation complete.\n";
 
-    return 0;
-}
+//     return 0;
+// }

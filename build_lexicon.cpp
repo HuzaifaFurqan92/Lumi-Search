@@ -102,41 +102,41 @@ void readAllFiles(const string& path, unordered_map<string, int>& lexicon) {
             cout << "Skipping unsupported file: " << path << endl;
     }
 }
-int main(int argc, char* argv[]) {
-    if (argc < 2) {
-        std::cout << "Usage: build_lexicon <folder_or_file_path>\n";
-        return 1;
-    }
+// int main(int argc, char* argv[]) {
+//     if (argc < 2) {
+//         std::cout << "Usage: build_lexicon <folder_or_file_path>\n";
+//         return 1;
+//     }
 
-    // <-- Get path from command-line argument instead of hardcoding
-    std::string path = argv[1];
+//     // <-- Get path from command-line argument instead of hardcoding
+//     std::string path = argv[1];
 
-    unordered_map<string, int> lexicon;
+//     unordered_map<string, int> lexicon;
 
-    cout << "Starting...\n";
+//     cout << "Starting...\n";
 
-    readAllFiles(path, lexicon);
+//     readAllFiles(path, lexicon);
 
-    cout << "\nFinished! Total unique words in lexicon: " << lexicon.size() << "\n";
+//     cout << "\nFinished! Total unique words in lexicon: " << lexicon.size() << "\n";
 
-    // -------------------- Save Lexicon JSON --------------------
-    json lexJson;
-    lexJson["lexicon"] = json::array();
+//     // -------------------- Save Lexicon JSON --------------------
+//     json lexJson;
+//     lexJson["lexicon"] = json::array();
 
-    // only export words (not counts)
-    for (auto& p : lexicon)
-        lexJson["lexicon"].push_back(p.first);
+//     // only export words (not counts)
+//     for (auto& p : lexicon)
+//         lexJson["lexicon"].push_back(p.first);
 
-    // write lexicon.json file
-    std::ofstream out("lexicon.json");
-    out << lexJson.dump(4);
-    out.close();
+//     // write lexicon.json file
+//     std::ofstream out("lexicon.json");
+//     out << lexJson.dump(4);
+//     out.close();
 
-    cout << "\n✓ Lexicon saved to lexicon.json\n";
+//     cout << "\n✓ Lexicon saved to lexicon.json\n";
 
    
 
-    return 0;
-}
+//     return 0;
+// }
 
 

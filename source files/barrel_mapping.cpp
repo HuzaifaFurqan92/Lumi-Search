@@ -74,32 +74,32 @@ void saveBarrelMapping(const std::unordered_map<int,int>& barrelMap, const std::
     std::cout << "✓ Barrel mapping saved: " << outFile << "\n";
 }
 
-// -------------------- Main --------------------
-int main(int argc, char* argv[]) {
-    if (argc < 3) {
-        std::cout << "Usage: member1_barrel_mapping <lexicon_json> <barrel_mapping_json>\n";
-        return 1;
-    }
+// // -------------------- Main --------------------
+// int main(int argc, char* argv[]) {
+//     if (argc < 3) {
+//         std::cout << "Usage: member1_barrel_mapping <lexicon_json> <barrel_mapping_json>\n";
+//         return 1;
+//     }
 
-    std::string lexFile = argv[1];
-    std::string outFile = argv[2];
+//     std::string lexFile = argv[1];
+//     std::string outFile = argv[2];
 
-    // Load lexicon
-    auto lexMap = loadLexicon(lexFile);
-    std::cout << "Loaded lexicon size: " << lexMap.size() << "\n";
+//     // Load lexicon
+//     auto lexMap = loadLexicon(lexFile);
+//     std::cout << "Loaded lexicon size: " << lexMap.size() << "\n";
 
-    // Generate barrel mapping
-    auto barrelMap = generateBarrelMapping(lexMap);
+//     // Generate barrel mapping
+//     auto barrelMap = generateBarrelMapping(lexMap);
 
-    // Save mapping
-    saveBarrelMapping(barrelMap, outFile);
+//     // Save mapping
+//     saveBarrelMapping(barrelMap, outFile);
 
-    // Simple test
-    std::string testWord = "virus";
-    int testID = lexMap[testWord];
-    int barrelID = barrelMap[testID];
-    std::cout << "Test word: '" << testWord << "' -> LexID: " << testID
-              << " -> BarrelID: " << barrelID << "\n";
+//     // Simple test
+//     std::string testWord = "virus";
+//     int testID = lexMap[testWord];
+//     int barrelID = barrelMap[testID];
+//     std::cout << "Test word: '" << testWord << "' -> LexID: " << testID
+//               << " -> BarrelID: " << barrelID << "\n";
 
-    return 0;
-}
+//     return 0;
+// }

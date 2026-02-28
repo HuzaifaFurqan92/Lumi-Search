@@ -190,36 +190,36 @@ void singleWordSearch(
 
 
 // -------------------- MAIN --------------------
-int main(int argc, char* argv[])
-{
-    if(argc < 5)
-    {
-        std::cout << "Usage:\n";
-        std::cout << "single_search <lexicon.json> "
-                  << "<barrel_map.json> "
-                  << "<barrels_dir> "
-                  << "<search_word>\n";
-        return 1;
-    }
+// int main(int argc, char* argv[])
+// {
+//     if(argc < 5)
+//     {
+//         std::cout << "Usage:\n";
+//         std::cout << "single_search <lexicon.json> "
+//                   << "<barrel_map.json> "
+//                   << "<barrels_dir> "
+//                   << "<search_word>\n";
+//         return 1;
+//     }
 
-    std::string lexFile    = argv[1];
-    std::string mapFile    = argv[2];
-    std::string barrelDir = argv[3];
-    std::string query     = argv[4];
+//     std::string lexFile    = argv[1];
+//     std::string mapFile    = argv[2];
+//     std::string barrelDir = argv[3];
+//     std::string query     = argv[4];
 
-    // Load files
-    auto lexicon   = loadLexicon(lexFile);
-    auto barrelMap = loadBarrelMapping(mapFile);
+//     // Load files
+//     auto lexicon   = loadLexicon(lexFile);
+//     auto barrelMap = loadBarrelMapping(mapFile);
 
-    std::cout << "Lexicon size: "
-              << lexicon.size() << "\n";
+//     std::cout << "Lexicon size: "
+//               << lexicon.size() << "\n";
 
-    std::cout << "Barrel map size: "
-              << barrelMap.size() << "\n\n";
+//     std::cout << "Barrel map size: "
+//               << barrelMap.size() << "\n\n";
 
-    // Execute search
-    singleWordSearch(query, lexicon,
-                     barrelMap, barrelDir);
+//     // Execute search
+//     singleWordSearch(query, lexicon,
+//                      barrelMap, barrelDir);
 
-    return 0;
-}
+//     return 0;
+// }

@@ -39,96 +39,96 @@ void tokenize(const std::string& text,
     }
 }
 
-int main(int argc, char* argv[]) {
+// int main(int argc, char* argv[]) {
 
-    if (argc < 4) {
-        std::cout << "Usage: build_forward_index <dataset_folder> <lexicon_json> <output_json>\n";
-        return 1;
-    }
+//     if (argc < 4) {
+//         std::cout << "Usage: build_forward_index <dataset_folder> <lexicon_json> <output_json>\n";
+//         return 1;
+//     }
 
-    std::string datasetDir  = argv[1];
-    std::string lexiconFile = argv[2];
-    std::string outputFile  = argv[3];
+//     std::string datasetDir  = argv[1];
+//     std::string lexiconFile = argv[2];
+//     std::string outputFile  = argv[3];
 
-    // -------------------- Load Lexicon JSON --------------------
-    std::ifstream lexIn(lexiconFile);
-    json lexJson;
-    lexIn >> lexJson;
+//     // -------------------- Load Lexicon JSON --------------------
+//     std::ifstream lexIn(lexiconFile);
+//     json lexJson;
+//     lexIn >> lexJson;
 
-    std::unordered_map<std::string,int> lexiconMap;
+//     std::unordered_map<std::string,int> lexiconMap;
 
-    int id = 1;
-    for (const auto& w : lexJson["lexicon"]) {
-        lexiconMap[w.get<std::string>()] = id++;
-    }
+//     int id = 1;
+//     for (const auto& w : lexJson["lexicon"]) {
+//         lexiconMap[w.get<std::string>()] = id++;
+//     }
 
-    std::cout << "Loaded lexicon size: " << lexiconMap.size() << "\n";
+//     std::cout << "Loaded lexicon size: " << lexiconMap.size() << "\n";
 
-    // -------------------- Prepare Forward Index JSON --------------------
-    json forwardIndex;
-    forwardIndex["documents"] = json::array();
+//     // -------------------- Prepare Forward Index JSON --------------------
+//     json forwardIndex;
+//     forwardIndex["documents"] = json::array();
 
-    int docID = 0;
+//     int docID = 0;
 
-    std::vector<fs::path> files;
+//     std::vector<fs::path> files;
 
-    // -------------------- Traverse dataset --------------------
-    for (auto& entry : fs::recursive_directory_iterator(datasetDir)) {
+//     // -------------------- Traverse dataset --------------------
+//     for (auto& entry : fs::recursive_directory_iterator(datasetDir)) {
 
-        if (!fs::is_regular_file(entry.path()) || !isReadableFile(entry.path()))
-            continue;
-        if (fs::is_regular_file(entry.path()) && isReadableFile(entry.path()))
-        files.push_back(entry.path());
+//         if (!fs::is_regular_file(entry.path()) || !isReadableFile(entry.path()))
+//             continue;
+//         if (fs::is_regular_file(entry.path()) && isReadableFile(entry.path()))
+//         files.push_back(entry.path());
 
-    // Sort files alphabetically for deterministic docID assignment
-    std::sort(files.begin(), files.end());
-        docID++;
+//     // Sort files alphabetically for deterministic docID assignment
+//     std::sort(files.begin(), files.end());
+//         docID++;
 
-        std::ifstream fin(entry.path());
-        if (!fin) continue;
+//         std::ifstream fin(entry.path());
+//         if (!fin) continue;
 
-        std::string content(
-            (std::istreambuf_iterator<char>(fin)),
-             std::istreambuf_iterator<char>()
-        );
-        fin.close();
+//         std::string content(
+//             (std::istreambuf_iterator<char>(fin)),
+//              std::istreambuf_iterator<char>()
+//         );
+//         fin.close();
 
-        // -------------------- Local term frequency --------------------
-        std::unordered_map<std::string,int> localTF;
-        tokenize(content, localTF);
+//         // -------------------- Local term frequency --------------------
+//         std::unordered_map<std::string,int> localTF;
+//         tokenize(content, localTF);
 
-        // -------------------- Convert words → lexicon IDs --------------------
-        json termsObj = json::object();
+//         // -------------------- Convert words → lexicon IDs --------------------
+//         json termsObj = json::object();
 
-        for (auto& p : localTF) {
-            const std::string& word = p.first;
-            int freq = p.second;
+//         for (auto& p : localTF) {
+//             const std::string& word = p.first;
+//             int freq = p.second;
 
-            if (lexiconMap.count(word)) {
-                int lexID = lexiconMap[word];
-                termsObj[std::to_string(lexID)] = freq;
-            }
-        }
+//             if (lexiconMap.count(word)) {
+//                 int lexID = lexiconMap[word];
+//                 termsObj[std::to_string(lexID)] = freq;
+//             }
+//         }
 
-        // -------------------- Add document entry --------------------
-        json d;
-        d["doc_id"] = docID;
-        d["file"]   = entry.path().string();
-        d["terms"]  = termsObj;
+//         // -------------------- Add document entry --------------------
+//         json d;
+//         d["doc_id"] = docID;
+//         d["file"]   = entry.path().string();
+//         d["terms"]  = termsObj;
 
-        forwardIndex["documents"].push_back(d);
+//         forwardIndex["documents"].push_back(d);
 
-        std::cout << "Indexed: " << entry.path().string() << "\n";
-    }
+//         std::cout << "Indexed: " << entry.path().string() << "\n";
+//     }
 
-    // -------------------- Save Forward Index JSON --------------------
-    std::ofstream out(outputFile);
-    out << forwardIndex.dump(4);
-    out.close();
+//     // -------------------- Save Forward Index JSON --------------------
+//     std::ofstream out(outputFile);
+//     out << forwardIndex.dump(4);
+//     out.close();
 
-    std::cout << "\n✓ Forward index built successfully.\n";
-    std::cout << "✓ Documents indexed: " << docID << "\n";
-    std::cout << "✓ Output: " << outputFile << "\n";
+//     std::cout << "\n✓ Forward index built successfully.\n";
+//     std::cout << "✓ Documents indexed: " << docID << "\n";
+//     std::cout << "✓ Output: " << outputFile << "\n";
 
-    return 0;
-}
+//     return 0;
+// }

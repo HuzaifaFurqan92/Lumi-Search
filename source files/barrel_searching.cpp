@@ -120,48 +120,48 @@ void searchWord(
 // MAIN
 // ----------------------------------------------------
 
-int main(int argc, char* argv[]) {
+// int main(int argc, char* argv[]) {
 
-    if (argc < 5) {
-        std::cout << "Usage: search <word> <lexicon.json> <barrel_mapping.json> <barrels_directory>\n";
-        return 1;
-    }
+//     if (argc < 5) {
+//         std::cout << "Usage: search <word> <lexicon.json> <barrel_mapping.json> <barrels_directory>\n";
+//         return 1;
+//     }
 
-    std::string query      = argv[1];
-    std::string lexFile    = argv[2];
-    std::string mapFile    = argv[3];
-    std::string barrelsDir = argv[4];
+//     std::string query      = argv[1];
+//     std::string lexFile    = argv[2];
+//     std::string mapFile    = argv[3];
+//     std::string barrelsDir = argv[4];
 
-    // Load static data first
-    std::cout << "Loading lexicon...\n";
-    auto lexMap    = loadLexicon(lexFile);
-    std::cout << "Loading barrel mapping...\n";
-    auto barrelMap = loadBarrelMapping(mapFile);
-    std::cout << "Data loaded.\n";
+//     // Load static data first
+//     std::cout << "Loading lexicon...\n";
+//     auto lexMap    = loadLexicon(lexFile);
+//     std::cout << "Loading barrel mapping...\n";
+//     auto barrelMap = loadBarrelMapping(mapFile);
+//     std::cout << "Data loaded.\n";
     
-    // --- Timing the searchWord function ---
-    using std::chrono::high_resolution_clock;
-    using std::chrono::duration_cast;
-    using std::chrono::duration;
-    using std::chrono::microseconds;
+//     // --- Timing the searchWord function ---
+//     using std::chrono::high_resolution_clock;
+//     using std::chrono::duration_cast;
+//     using std::chrono::duration;
+//     using std::chrono::microseconds;
     
-    // Record start time
-    auto t1 = high_resolution_clock::now();
+//     // Record start time
+//     auto t1 = high_resolution_clock::now();
     
-    // Perform the search
-    searchWord(query, lexMap, barrelMap, barrelsDir);
+//     // Perform the search
+//     searchWord(query, lexMap, barrelMap, barrelsDir);
     
-    // Record end time
-    auto t2 = high_resolution_clock::now();
+//     // Record end time
+//     auto t2 = high_resolution_clock::now();
     
-    // Calculate the duration
-    auto ms_int = duration_cast<microseconds>(t2 - t1);
+//     // Calculate the duration
+//     auto ms_int = duration_cast<microseconds>(t2 - t1);
     
-    // Print the elapsed time
-    std::cout << "\nTime taken for search: " 
-              << ms_int.count() 
-              << " microseconds\n";
-    // -------------------------------------
+//     // Print the elapsed time
+//     std::cout << "\nTime taken for search: " 
+//               << ms_int.count() 
+//               << " microseconds\n";
+//     // -------------------------------------
 
-    return 0;
-}
+//     return 0;
+// }

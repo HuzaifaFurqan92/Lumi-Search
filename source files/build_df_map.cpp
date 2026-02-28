@@ -80,43 +80,43 @@ void saveDFMap(const std::string& dfFile, const DFMap& dfMap) {
     std::cout << "SUCCESS: DF Map saved to " << dfFile << " with " << dfMap.size() << " entries.\n";
 }
 
-int main(int argc, char* argv[]) {
-    // NOTE: This program requires 3 command-line arguments:
-    // 1. barrels_directory (e.g., "../barrels")
-    // 2. total_barrels_count (e.g., "5")
-    // 3. output_df_map.json (e.g., "../df_map.json")
-    if (argc < 4) { 
-        std::cerr << "Usage: ./build_df_map <barrels_directory> <total_barrels_count> <output_df_map.json>\n";
-        std::cerr << "Example: ./build_df_map ../barrels 5 ../df_map.json\n";
-        return 1;
-    }
+// int main(int argc, char* argv[]) {
+//     // NOTE: This program requires 3 command-line arguments:
+//     // 1. barrels_directory (e.g., "../barrels")
+//     // 2. total_barrels_count (e.g., "5")
+//     // 3. output_df_map.json (e.g., "../df_map.json")
+//     if (argc < 4) { 
+//         std::cerr << "Usage: ./build_df_map <barrels_directory> <total_barrels_count> <output_df_map.json>\n";
+//         std::cerr << "Example: ./build_df_map ../barrels 5 ../df_map.json\n";
+//         return 1;
+//     }
 
-    std::string barrelsDir = argv[1];
-    int totalBarrels;
+//     std::string barrelsDir = argv[1];
+//     int totalBarrels;
     
-    try {
-        // Safely convert the second argument (count) to an integer
-        totalBarrels = std::stoi(argv[2]);
-    } catch (const std::exception& e) {
-        std::cerr << "ERROR: Invalid number provided for total_barrels_count.\n";
-        return 1;
-    }
+//     try {
+//         // Safely convert the second argument (count) to an integer
+//         totalBarrels = std::stoi(argv[2]);
+//     } catch (const std::exception& e) {
+//         std::cerr << "ERROR: Invalid number provided for total_barrels_count.\n";
+//         return 1;
+//     }
     
-    std::string dfFile = argv[3];
+//     std::string dfFile = argv[3];
 
-    std::cout << "--- Starting Document Frequency Map Builder ---\n";
-    std::cout << "Input Barrels Dir: " << barrelsDir << " (" << totalBarrels << " total)\n";
-    std::cout << "Output File: " << dfFile << "\n";
+//     std::cout << "--- Starting Document Frequency Map Builder ---\n";
+//     std::cout << "Input Barrels Dir: " << barrelsDir << " (" << totalBarrels << " total)\n";
+//     std::cout << "Output File: " << dfFile << "\n";
     
-    // 1. Generate the map
-    DFMap dfMap = generateDFMap(barrelsDir, totalBarrels);
+//     // 1. Generate the map
+//     DFMap dfMap = generateDFMap(barrelsDir, totalBarrels);
 
-    // 2. Save the map
-    if (!dfMap.empty()) {
-        saveDFMap(dfFile, dfMap);
-    } else {
-        std::cerr << "Warning: DF Map is empty. Ensure barrel files contain data.\n";
-    }
+//     // 2. Save the map
+//     if (!dfMap.empty()) {
+//         saveDFMap(dfFile, dfMap);
+//     } else {
+//         std::cerr << "Warning: DF Map is empty. Ensure barrel files contain data.\n";
+//     }
 
-    return 0;
-}
+//     return 0;
+// }
